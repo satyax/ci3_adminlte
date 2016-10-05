@@ -28,3 +28,5 @@ application/composer.lock
 sql/backup/*
 sql/backup/!index.html
 assets/images_profile_pic/
+application/config/database.php
+application/config/production/database.php
