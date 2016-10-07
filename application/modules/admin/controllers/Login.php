@@ -25,7 +25,16 @@ class Login extends MY_Controller {
 				// login succeed
 				$messages = $this->ion_auth->messages();
 				$this->system_message->set_success($messages);
-				redirect('admin');
+				//redirect('admin');
+        
+        //wawan modified ini
+        if (strpos($this->session->userdata('current_url_full'), 'login') == false && !empty($this->session->userdata('current_url_full'))) {
+          $reqURL = $this->session->userdata('current_url_full');
+          $this->session->set_userdata([ 'current_url_full' => '' ]);
+          redirect($reqURL);
+        } else {
+          redirect('admin');
+        }
 			}
 			else
 			{

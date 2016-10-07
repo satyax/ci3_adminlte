@@ -19,7 +19,7 @@ class Onenote extends Admin_Controller {
     /*if ($id_notes != '') {
       $this->edit($id_notes); 
     } else {*/
-    
+      
 		  $crud = $this->generate_crud('trs_notes','Notes',array('is_deleted' => '0'));
       //$crud = $this->generate_crud('vw_trs_notes_active','Notes');
       $crud->columns('title', 'content', 'user_created', 'created_at');
@@ -59,7 +59,8 @@ class Onenote extends Admin_Controller {
     $this->edit($id_notes,false);
   }
   
-  public function edit($id_notes, $view_history = true) {
+  public function edit($id_notes, $view_history = true) { 
+    
     if ($id_notes != '') {
       $this->load->model('Mst_categories_model', 'mst_categories');
       $this->load->model('Mst_sub_categories_model', 'mst_sub_categories');
@@ -245,6 +246,38 @@ class Onenote extends Admin_Controller {
     if ($files['file_name_input']['name'][0]!='') return true;
   }
   
+  private function sendEmailNotification($id_notes) {
+    if ($id_notes=='') return;
+    
+    $this->load->library('email');
+    $this->load->model('Trs_notes_email_to_model', 'trs_notes_email_to');
+    $this->load->model('Trs_notes_email_log_model', 'trs_notes_email_log');    
+    $emails = $this->trs_notes_email_to->get_custom(['active' => 1],null,null,null);
+    $notes = $this->trs_notes->get_custom(['id_notes' => $id_notes],null,null,null)[0];   
+    
+    foreach ($emails as $email) {
+      $this->email->clear();
+      $this->email->from('no_reply@oshop.co.id', 'One Notes');
+      $this->email->to($email->email);
+      //$this->email->cc('test2@gmail.com');
+      $this->email->subject('[One Notes] '.$notes->title);
+      $this->email->message('
+        Hai! Ada perubahan di notes OShop, silahkan cek di: '.base_url().'admin/onenote/edit/'.$id_notes.'<br>
+        Dan dibawah isi notesnya: <br>'.$notes->content.'
+      ');
+      //$this->email->attach('/path/to/file1.png'); // attach file
+      //$this->email->attach('/path/to/file2.pdf');
+      ini_set('max_execution_time', 500);
+      $success = $this->email->send();
+      if ($success) 
+        $success = '1';
+      else 
+        $success = '0';
+      $this->trs_notes_email_log->insert(['email_to' => $email->email,'subject' => '[One Notes] '.$notes->title, 'content' => $notes->content, 'success' => $success]);
+    }
+
+  }
+  
   public function save() {
     
     $varGet = $this->input->post();
@@ -355,6 +388,8 @@ class Onenote extends Admin_Controller {
     //update file update-an
     
     $this->db->trans_complete();
+    
+    $this->sendEmailNotification($id_notes);
     
     header('Location: '.base_url().'admin/onenote/edit/'.$id_notes);
     

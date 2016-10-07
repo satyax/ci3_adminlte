@@ -70,7 +70,7 @@ class MY_Controller extends MX_Controller {
 		$this->mStylesheets = $site_config['stylesheets'];
 		$this->mPageAuth = empty($site_config['page_auth']) ? array() : $site_config['page_auth'];
 
-    // wawan tambahin ini
+    // wawan tambahin ini    
     $this->mViewData['image_folder'] = $site_config['image_folder'];
     $this->mViewData['image_profile_folder'] = $site_config['image_profile_folder'];
     $this->mViewData['file_upload_real_folder'] = $site_config['image_folder'];
@@ -128,6 +128,13 @@ class MY_Controller extends MX_Controller {
 	{
 		if ( !$this->ion_auth->logged_in() )
 		{
+      //wawan tambahin disini untuk rekam sebenarnya URL yang diminta user sebelumnya itu apa?
+      $this->load->library('wawan_lib');
+      $reqUrl = $this->wawan_lib->current_full_url();
+      if (strpos($reqUrl, 'login') == false) {
+        $this->session->set_userdata([ 'current_url_full' => $reqUrl ]);
+      }
+      
 			if ( $redirect_url==NULL )
 				$redirect_url = $this->mSiteConfig['login_url'];
 

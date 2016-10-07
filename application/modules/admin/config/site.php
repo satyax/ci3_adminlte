@@ -99,6 +99,7 @@ $config['site'] = array(
         'Admin Auth'   => 'authadmin',
         'Categories'      => 'categories',
         'Sub Categories'  => 'subcategories',
+        'One Notes Email'  => 'onenoteemail',
       )
     ),
     'oshop' => array(
