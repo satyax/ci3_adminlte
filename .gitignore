@@ -31,3 +31,4 @@ assets/images_profile_pic/
 application/config/database.php
 application/config/production/database.php
 assets/files/
+application/config/email.php
