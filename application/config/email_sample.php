@@ -8,11 +8,11 @@
 | */
 
 $config['protocol'] = 'smtp';
-$config['smtp_host'] = 'mail.oshop.co.id';
+$config['smtp_host'] = '';
 $config['smtp_port'] = '25';
 $config['smtp_timeout'] = '30';
-$config['smtp_user'] = 'no_reply@oshop.co.id';
-$config['smtp_pass'] = 'IT_2016';
+$config['smtp_user'] = '';
+$config['smtp_pass'] = '';
 $config['charset'] = 'utf-8';
 $config['mailtype'] = 'html';
 $config['wordwrap'] = TRUE;
@@ -21,8 +21,8 @@ $config['newline'] = "\n";
 $config['useragent'] = 'Microsoft Outlook';
 
 // custom values from CI Bootstrap
-$config['from_email'] = "no_reply@oshop.co.id";
-$config['from_name'] = "Oshop Internal Apps";
+$config['from_email'] = "";
+$config['from_name'] = "Wawan Default App";
 $config['subject_prefix'] = "";
 
 // Mailgun API (to be used in Email Client library)
