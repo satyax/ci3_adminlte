@@ -11,6 +11,14 @@
 			<?php echo $form->messages(); ?>
 			<?php echo $form->bs3_text('Username', 'username', ENVIRONMENT==='development' ? 'webmaster' : ''); ?>
 			<?php echo $form->bs3_password('Password', 'password', ENVIRONMENT==='development' ? 'webmaster' : ''); ?>
+      <?php
+        if ($use_captcha == 1) {
+      ?>
+        <img id="imgcaptcha" name="imgcaptcha" src="<?php echo $captcha_url.$captcha['filename'];  ?>" style="width: 150; height: 30; border: 0;" alt="captcha" />
+      <?php
+          echo $form->bs3_text('Captcha', 'captcha', '');
+        }
+      ?>
 			<div class="row">
 				<div class="col-xs-8">
 					<div class="checkbox">

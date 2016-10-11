@@ -189,4 +189,29 @@ $config['site'] = array(
   'image_profile_real_folder' => FCPATH.'assets/images_profile_pic/',
   'file_upload_real_folder' => FCPATH.'assets/files/',
   'file_upload_folder' => 'assets/files/',
+  'captcha_folder' => FCPATH.'assets/captcha/',
+  'captcha_url' => 'assets/captcha/',
+  'captcha_expiration' => 7200,
+);
+
+$config['captcha'] = array(
+  //'word'          => 'Random word',
+  'img_path'      => $config['site']['captcha_folder'], //'./captcha/',
+  'img_url'       => $config['site']['captcha_url'], //'http://example.com/captcha/',
+  'font_path'     => '', //'./path/to/fonts/texb.ttf',
+  'img_width'     => '150',
+  'img_height'    => 30,
+  'expiration'    => $config['site']['captcha_expiration'], //7200,
+  'word_length'   => 8,
+  'font_size'     => 16,
+  'img_id'        => 'Imageid',
+  'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+
+  // White background and border, black text and red grid
+  'colors'        => array(
+          'background' => array(255, 255, 255),
+          'border' => array(255, 255, 255),
+          'text' => array(0, 0, 0),
+          'grid' => array(255, 40, 40)
+  )
 );
