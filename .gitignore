@@ -32,3 +32,4 @@ application/config/database.php
 application/config/production/database.php
 assets/files/
 application/config/email.php
+assets/captcha/

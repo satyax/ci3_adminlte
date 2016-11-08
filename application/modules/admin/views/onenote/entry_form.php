@@ -125,11 +125,14 @@
         <?php if ($view_history) { ?>
           <div class="form-group">
             <button type="submit" class="btn btn-success">Save</button>
-            <?php if ($allow_permanent_delete) { ?>
+            <?php 
+              if (isset($notes_files) && !empty($notes_files)) {
+                if ($allow_permanent_delete) { 
+            ?>
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#edit-modal" onclick="konfirmasiDeleteOneNote(<?php echo $id_notes; ?>);">Permanent Delete</button>
             <?php } ?>
           </div>
-        <?php } ?>
+        <?php } } ?>
         
       </div>
   </form>

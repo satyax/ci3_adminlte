@@ -956,7 +956,7 @@ abstract class REST_Controller extends MX_Controller {
      * @return bool
      */
     protected function _detect_api_key()
-    {
+    { 
         // Get the api key name variable set in the rest config file
         $api_key_variable = $this->config->item('rest_key_name');
 

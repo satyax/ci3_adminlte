@@ -70,7 +70,7 @@ class MY_Controller extends MX_Controller {
 		$this->mStylesheets = $site_config['stylesheets'];
 		$this->mPageAuth = empty($site_config['page_auth']) ? array() : $site_config['page_auth'];
 
-    // wawan tambahin ini    
+    // wawan tambahin ini
     $this->mViewData['image_folder'] = $site_config['image_folder'];
     $this->mViewData['image_profile_folder'] = $site_config['image_profile_folder'];
     $this->mViewData['file_upload_real_folder'] = $site_config['image_folder'];

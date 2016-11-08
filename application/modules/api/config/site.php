@@ -77,4 +77,10 @@ $config['site'] = array(
 		'view_data'		=> FALSE,	// whether to display MY_Controller's mViewData at page end
 		'profiler'		=> FALSE,	// whether to display CodeIgniter's profiler at page end
 	),
+  
+  'image_folder' => 'assets/images/',
+  'image_profile_folder' => 'assets/images_profile_pic/',
+  'image_profile_real_folder' => FCPATH.'assets/images_profile_pic/',
+  'file_upload_real_folder' => FCPATH.'assets/files/',
+  'file_upload_folder' => 'assets/files/',
 );

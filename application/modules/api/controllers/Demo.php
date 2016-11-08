@@ -7,6 +7,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Demo extends API_Controller {
 
+  public function captcha_post() {
+    die("dasdwqd");
+  }
+  
 	/**
 	 * @SWG\Get(
 	 * 	path="/demo",

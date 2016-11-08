@@ -125,6 +125,7 @@ $config['rest_realm'] = 'REST API';
 |
 */
 $config['rest_auth'] = FALSE;
+//$config['rest_auth'] = 'digest';
 
 /*
 |--------------------------------------------------------------------------
@@ -141,6 +142,7 @@ $config['rest_auth'] = FALSE;
 |
 */
 $config['auth_source'] = 'ldap';
+//$config['auth_source'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -199,8 +201,9 @@ $config['auth_library_function'] = '';
 
 
 // ---Uncomment list line for the wildard unit test
-// $config['auth_override_class_method']['wildcard_test_cases']['*'] = 'basic';
+ $config['auth_override_class_method']['wildcard_test_cases']['*'] = 'basic';
 $config['auth_override_class_method']['demo']['*'] = 'none';
+//$config['auth_override_class_method']['captcha']['*'] = 'basic';
 
 /*
 |--------------------------------------------------------------------------
@@ -215,7 +218,7 @@ $config['auth_override_class_method']['demo']['*'] = 'none';
 */
 
 // ---Uncomment list line for the wildard unit test
-// $config['auth_override_class_method_http']['wildcard_test_cases']['*']['options'] = 'basic';
+ $config['auth_override_class_method_http']['wildcard_test_cases']['*']['options'] = 'basic';
 
 /*
 |--------------------------------------------------------------------------
@@ -407,7 +410,8 @@ $config['rest_key_name'] = 'X-API-KEY';
 |   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
 */
-$config['rest_enable_logging'] = FALSE;
+//$config['rest_enable_logging'] = FALSE;
+$config['rest_enable_logging'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------

@@ -30,8 +30,7 @@ class Login extends MY_Controller {
 	/**
 	 * Login page and submission
 	 */
-	public function index()
-	{    
+	public function index()	{    
     $this->load->model('Mst_captcha_model', 'mst_captcha');
     $use_captcha = $this->isUseCaptcha();
     
@@ -47,8 +46,7 @@ class Login extends MY_Controller {
       
       // get captcha data
       if ($use_captcha == 1) $captcha = $this->input->post('captcha'); else $captcha = '';
-      
-			
+      			
       if ($use_captcha == 1 && $captcha == '') {
         // config use captcha = 1 but the posted captcha is empty string, cannot login
         $this->system_message->set_error('Captcha is mandatory');
@@ -91,7 +89,8 @@ class Login extends MY_Controller {
       }
 		}
 		
-    // setup captcha    
+    // setup captcha      
+    // mulai setup captcha
     $this->mViewData['captcha_folder'] = $this->mSiteConfig['captcha_folder'];
     $this->mViewData['captcha_url'] = base_url().$this->mSiteConfig['captcha_url'];
     $this->mViewData['use_captcha'] = $use_captcha;

@@ -11,8 +11,6 @@ class Onenote extends Admin_Controller {
     $this->load->model('Trs_notes_model', 'trs_notes');
     $this->load->model('Trs_notes_files_model', 'trs_notes_files');
     $this->load->model('Mst_auth_admin_model', 'mst_auth_admin');
-    
-    $this->add_script('assets/dist/oshop/one_notes.js',true,'head');
 	}
   
 	public function index()	{    
@@ -49,6 +47,8 @@ class Onenote extends Admin_Controller {
   }
   
   public function add() {
+    $this->add_script('assets/dist/oshop/one_notes.js',true,'head');
+    
     $this->mViewData['view_history'] = true;
     $this->load->model('Mst_categories_model', 'mst_categories');
     $this->mViewData['categories'] = $this->mst_categories->get_all();
@@ -59,9 +59,10 @@ class Onenote extends Admin_Controller {
     $this->edit($id_notes,false);
   }
   
-  public function edit($id_notes, $view_history = true) { 
-    
+  public function edit($id_notes, $view_history = true) {    
     if ($id_notes != '') {
+      $this->add_script('assets/dist/oshop/one_notes.js',true,'head');
+      
       $this->load->model('Mst_categories_model', 'mst_categories');
       $this->load->model('Mst_sub_categories_model', 'mst_sub_categories');
       
