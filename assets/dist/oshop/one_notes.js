@@ -1,7 +1,3 @@
-function addOneNotes() {
-  location.href=base_url+'admin/onenote/add';
-}
-
 function konfirmasiDeleteOneNote(id_notes) {
   $('#edit-modal').on('show.bs.modal', function(e) {
     var $modal = $(this);

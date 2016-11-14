@@ -18,6 +18,8 @@ class Onenote extends Admin_Controller {
       $this->edit($id_notes); 
     } else {*/
       
+      $this->add_script('assets/dist/oshop/one_notes_grid.js',true,'head');
+      
 		  $crud = $this->generate_crud('trs_notes','Notes',array('is_deleted' => '0'));
       //$crud = $this->generate_crud('vw_trs_notes_active','Notes');
       $crud->columns('title', 'content', 'user_created', 'created_at');
