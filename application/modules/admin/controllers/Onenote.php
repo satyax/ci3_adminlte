@@ -13,7 +13,7 @@ class Onenote extends Admin_Controller {
     $this->load->model('Mst_auth_admin_model', 'mst_auth_admin');
 	}
   
-	public function index()	{    
+	public function index()	{
     /*if ($id_notes != '') {
       $this->edit($id_notes); 
     } else {*/
@@ -22,7 +22,14 @@ class Onenote extends Admin_Controller {
       
 		  $crud = $this->generate_crud('trs_notes','Notes',array('is_deleted' => '0'));
       //$crud = $this->generate_crud('vw_trs_notes_active','Notes');
-      $crud->columns('title', 'content', 'user_created', 'created_at');
+      $crud->columns('title', 'id_categories', 'id_sub_categories', 'content', 'user_created', 'created_at');
+      
+      $crud->display_as('id_categories','Categories');
+      $crud->set_relation('id_categories','mst_categories','category');
+      $crud->display_as('id_sub_categories','Sub-Categories');
+      $crud->set_relation('id_sub_categories','mst_sub_categories','sub_category');
+      
+      $crud->set_wwn_default_view_per_page(100);
       
       $crud->unset_add();
       $crud->unset_edit();

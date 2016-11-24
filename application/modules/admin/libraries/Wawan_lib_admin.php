@@ -4,7 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Library to import data from .csv files
  */
-class Wawan_lib {
+class Wawan_lib_admin {
+  public function __construct() {
+    $this->CI =& get_instance();
+  }
+  
   function variableExistAndNotEmpty($var) {
     if (isset($var) AND !empty($var)) return true;
   }
@@ -31,7 +35,7 @@ class Wawan_lib {
     );
 }
 
-  function isOdd($num) { return num % 2;}
+  function isOdd($num) { return $num % 2;}
   
   function elipsis($string, $length, $stopanywhere=false) {
     //truncates a string to a certain char length, stopping on a word if not specified otherwise.
@@ -55,4 +59,37 @@ class Wawan_lib {
     return $_SERVER['QUERY_STRING'] ? $url.'?'.$_SERVER['QUERY_STRING'] : $url;
   }
   
+  // ini untuk nimpa config captcha di CI dengan config captcha yang ada di database (jadi config captcha bisa disimpan di database)
+  function retrieveCaptchaConfigurations() {
+    $this->CI->load->model('Admin/Mst_configurations_model', 'mst_configurations');
+    $configCaptchaDatabase = $this->CI->mst_configurations->get_many_by('groups', 'Admin Captcha');
+    $configCaptchaCI = $this->CI->config->load('Admin/site', true)['captcha'];
+    foreach ($configCaptchaDatabase as $data) {
+      switch ($data->code) {
+        case 'admcap1':
+          $configCaptchaCI['enabled'] = ($data->value == 1 ? true : false);
+          break;
+        case 'admcap2':
+          $configCaptchaCI['expire'] = $data->value;
+          break;
+        case 'admcap3':
+          $configCaptchaCI['img_height'] = $data->value;
+          break;
+        case 'admcap4':
+          $configCaptchaCI['img_width'] = $data->value;
+          break;
+        case 'admcap5':
+          $configCaptchaCI['word_length'] = $data->value;
+          break;
+        case 'admcap6':
+          $configCaptchaCI['font_size'] = $data->value;
+          break;
+        case 'admcap7':
+          $configCaptchaCI['case_sensitive'] = $data->value;
+          break;
+      }
+    }
+    return $configCaptchaCI;
+  }
+    
 }

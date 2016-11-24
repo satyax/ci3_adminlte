@@ -1531,6 +1531,16 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected $js_files					= array();
 	protected $js_lib_files				= array();
 	protected $js_config_files			= array();
+  
+  // wawan tambahin ini untuk modif supaya GC bisa ubah default view
+  protected $wwn_paging_options = NULL;
+  protected $wwn_default_view_per_page = NULL;
+  function set_wwn_paging_options(array $options) {
+    $this->wwn_paging_options = $options;
+  }
+  function set_wwn_default_view_per_page($i) {
+    $this->wwn_default_view_per_page = $i;
+  }
 
 	protected function set_basic_Layout()
 	{
@@ -1580,8 +1590,15 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_export			= $this->unset_export;
 		$data->unset_print			= $this->unset_print;
 
-		$default_per_page = $this->config->default_per_page;
-		$data->paging_options = $this->config->paging_options;
+    //wawan ubah ini diganti jadi yang bawahnya
+		//$default_per_page = $this->config->default_per_page;
+    $default_per_page = $this->wwn_default_view_per_page ? $this->wwn_default_view_per_page : $this->config->default_per_page;
+    
+    //wawan ubah ini diganti jadi yang bawahnya
+		//$data->paging_options = $this->config->paging_options;
+    $data->paging_options = $this->wwn_paging_options ? $this->wwn_paging_options : $this->config->paging_options;
+
+    
 		$data->default_per_page		= is_numeric($default_per_page) && $default_per_page >1 && in_array($default_per_page,$data->paging_options)? $default_per_page : 25;
 
 		if($data->list === false)

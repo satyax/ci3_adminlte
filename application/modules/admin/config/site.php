@@ -85,9 +85,10 @@ $config['site'] = array(
       'url'    => 'panel',
       'icon'    => 'fa fa-cog',
       'children'  => array(
-        'Admin Users'      => 'panel/admin_user',
-        'Create Admin User'    => 'panel/admin_user_create',
-        'Admin User Groups'    => 'panel/admin_user_group',
+        'Admin Users'           => 'panel/admin_user',
+        'Create Admin User'     => 'panel/admin_user_create',
+        'Admin User Groups'     => 'panel/admin_user_group',
+        'Configurations'        => 'configurations/configurations',
       )
     ),
     'master' => array(
@@ -108,7 +109,8 @@ $config['site'] = array(
       'icon'    => 'fa fa-shopping-basket',
       'children'  => array(
         'One Note' => 'onenote',
-        'Godpad'      => 'godpad',
+        //'Godpad'      => 'godpad',
+        'Cetak DO Manual' => 'cetakdo/cetak_do',
       )
     ),
 		/*'demo' => array(
@@ -189,23 +191,23 @@ $config['site'] = array(
   'image_profile_real_folder' => FCPATH.'assets/images_profile_pic/',
   'file_upload_real_folder' => FCPATH.'assets/files/',
   'file_upload_folder' => 'assets/files/',
-  'captcha_folder' => FCPATH.'assets/captcha/',
-  'captcha_url' => 'assets/captcha/',
-  'captcha_expiration' => 7200,
 );
 
-$config['captcha'] = array(
+$config['captcha'] = [
+  'enabled' => false,
   //'word'          => 'Random word',
-  'img_path'      => $config['site']['captcha_folder'], //'./captcha/',
-  'img_url'       => $config['site']['captcha_url'], //'http://example.com/captcha/',
+  'img_path'      => FCPATH.'assets/captcha/',
+  'img_url'       => 'assets/captcha/',
   'font_path'     => '', //'./path/to/fonts/texb.ttf',
-  'img_width'     => '150',
+  'img_widthx'     => '150',
   'img_height'    => 30,
-  'expiration'    => $config['site']['captcha_expiration'], //7200,
-  'word_length'   => 8,
+  'word_length'   => 4,
   'font_size'     => 16,
   'img_id'        => 'Imageid',
-  'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  //'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  'pool'          => 'ABCDEFGHJKM',
+  'expire'        => 7200,
+  'case_sensitive'=> 1,
 
   // White background and border, black text and red grid
   'colors'        => array(
@@ -214,4 +216,4 @@ $config['captcha'] = array(
           'text' => array(0, 0, 0),
           'grid' => array(255, 40, 40)
   )
-);
+];

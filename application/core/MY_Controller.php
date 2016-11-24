@@ -51,15 +51,25 @@ class MY_Controller extends MX_Controller {
 		$this->mCtrler = $this->router->fetch_class();
 		$this->mAction = $this->router->fetch_method();
 		$this->mMethod = $this->input->server('REQUEST_METHOD');
-		
+    
 		// initial setup
 		$this->_setup();
 	}
 
 	// Setup values from file: config/site.php
-	private function _setup()
-	{
-		$site_config = $this->config->item('site');
+	private function _setup()	{
+    // wawan tambahin ini untuk bedain halaman admin dan webpage
+    // wawan tambahin ini untuk overide settingan captcha ambil dari database
+    if (strpos($this->uri->uri_string(),'admin')!==false) {
+      $this->config->load('admin/site', true);
+      $this->load->library('Admin/wawan_lib_admin', true);
+      $capcthaConfiguration = $this->wawan_lib_admin->retrieveCaptchaConfigurations();
+      $this->mViewData['captcha_config'] = $capcthaConfiguration;
+      
+		  $site_config = $this->config->load('Admin/site', true)['site'];
+    } else {
+      $site_config = $this->config->load('site');
+    }
 		
 		// load default values
 		$this->mSiteName = $site_config['name'];
@@ -69,12 +79,12 @@ class MY_Controller extends MX_Controller {
 		$this->mScripts = $site_config['scripts'];
 		$this->mStylesheets = $site_config['stylesheets'];
 		$this->mPageAuth = empty($site_config['page_auth']) ? array() : $site_config['page_auth'];
-
+    
     // wawan tambahin ini
     $this->mViewData['image_folder'] = $site_config['image_folder'];
     $this->mViewData['image_profile_folder'] = $site_config['image_profile_folder'];
     $this->mViewData['file_upload_real_folder'] = $site_config['image_folder'];
-    $this->mViewData['file_upload_folder'] = $site_config['image_folder'];
+    $this->mViewData['file_upload_folder'] = $site_config['image_folder'];    
     
 		// restrict pages
 		$uri = empty($this->mModule) ? $this->uri->uri_string() : str_replace($this->mModule.'/', '', $this->uri->uri_string());
@@ -129,8 +139,7 @@ class MY_Controller extends MX_Controller {
 		if ( !$this->ion_auth->logged_in() )
 		{
       //wawan tambahin disini untuk rekam sebenarnya URL yang diminta user sebelumnya itu apa?
-      $this->load->library('wawan_lib');
-      $reqUrl = $this->wawan_lib->current_full_url();
+      $reqUrl = $this->wawan_lib_admin->current_full_url();
       if (strpos($reqUrl, 'login') == false) {
         $this->session->set_userdata([ 'current_url_full' => $reqUrl ]);
       }

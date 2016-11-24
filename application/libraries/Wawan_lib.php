@@ -5,6 +5,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Library to import data from .csv files
  */
 class Wawan_lib {
+  public function __construct() {
+    $this->CI =& get_instance();
+  }
+  
+  function variableExistAndNotEmpty($var) {
+    if (isset($var) AND !empty($var)) return true;
+  }
+  
   function gen_uuid() {
     return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
         // 32 bits for "time_low"
@@ -49,6 +57,35 @@ class Wawan_lib {
     $CI =& get_instance();
     $url = $CI->config->site_url($CI->uri->uri_string());
     return $_SERVER['QUERY_STRING'] ? $url.'?'.$_SERVER['QUERY_STRING'] : $url;
+  }
+  
+  function retrieveCaptchaConfigurations() {
+    $this->CI->load->model('Admin/Mst_configurations_model', 'mst_configurations');
+    $configCaptchaDatabase = $this->CI->mst_configurations->get_many_by('groups', 'Captcha');
+    $configCaptchaCI = $this->CI->config->item('captcha');
+    foreach ($configCaptchaDatabase as $data) {
+      switch ($data->config) {
+        case 'Use captcha in admin login page':
+          $configCaptchaCI['enabled'] = ($data->value == 1 ? true : false);
+          break;
+        case 'Captcha expiration (seconds)':
+          $configCaptchaCI['expire'] = $data->value;
+          break;
+        case 'Captcha img height':
+          $configCaptchaCI['img_height'] = $data->value;
+          break;
+        case 'Captcha img width':
+          $configCaptchaCI['img_width'] = $data->value;
+          break;
+        case 'Captcha word length':
+          $configCaptchaCI['word_length'] = $data->value;
+          break;
+        case 'Captcha font size':
+          $configCaptchaCI['font_size'] = $data->value;
+          break;
+      }
+    }
+    return $configCaptchaCI;
   }
 
 }

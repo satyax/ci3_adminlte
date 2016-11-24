@@ -12,11 +12,20 @@
 			<?php echo $form->bs3_text('Username', 'username', ENVIRONMENT==='development' ? 'webmaster' : ''); ?>
 			<?php echo $form->bs3_password('Password', 'password', ENVIRONMENT==='development' ? 'webmaster' : ''); ?>
       <?php
-        if ($use_captcha == 1) {
+        if ($captcha_config['enabled']) {
       ?>
-        <img id="imgcaptcha" name="imgcaptcha" src="<?php echo $captcha_url.$captcha['filename'];  ?>" style="width: 150; height: 30; border: 0;" alt="captcha" />
+          <div class="form-group">
+            <div class="col-xs-6">
+              <img id="imgcaptcha" name="imgcaptcha" src="<?php echo base_url().$captcha_config['img_url'].$captcha['filename'];  ?>" style="width: 150; height: 30; border: 0;" alt="captcha" />
+            </div>
+            <div class="col-xs-6">
+              <button type="button" class="btn btn-primary btn-block btn-flat" onclick="refreshAdminCaptcha()" >Refresh Captcha</button>
+            </div>
       <?php
-          echo $form->bs3_text('Captcha', 'captcha', '');
+            echo $form->bs3_text('Captcha', 'captcha', '');
+      ?>
+          </div>
+      <?php
         }
       ?>
 			<div class="row">
@@ -33,3 +42,11 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+  function refreshAdminCaptcha() {
+    $.get("<?php echo base_url(); ?>captcha/refreshAdminCaptcha", function(data, status){
+      $('#imgcaptcha').attr("src",'<?php echo base_url(); ?>assets/captcha/' + data.filename);
+    });
+  }
+</script>

@@ -4,22 +4,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // NOTE: this controller inherits from MY_Controller instead of Admin_Controller,
 // since no authentication is required
 class Login extends MY_Controller {
-
+  
+  public function __construct() {
+    parent::__construct();
+    
+    //$this->add_script('assets/dist/oshop/captcha.js',true,'head');
+  }
+  
   private function isUseCaptcha() {
-    $this->load->model('Mst_configurations_model', 'mst_configurations');
-    $use_captcha = $this->mst_configurations->get_by('config', 'Use captcha in Admin Login page');
-    if ($use_captcha) $use_captcha = ($use_captcha->value == 1 ?  1 : 0); else $use_captcha = 0; 
+    $use_captcha = $this->mViewData['captcha_config']['enabled'];
     return $use_captcha;
   }
   
   private function isCaptchaOK($captcha) {
     // First, delete old captchas
-    $expiration = time() - $this->mSiteConfig['captcha_expiration'];
+    $captchaExpire = $this->mViewData['captcha_config']['expire'];
+    $expiration = time() - $captchaExpire; //$this->mSiteConfig['captcha_expiration'];
     $this->db->where('captcha_time < ', $expiration)
       ->delete('mst_captcha');
 
     // Then see if a captcha exists:
-    $sql = 'SELECT COUNT(*) AS count FROM mst_captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?';
+    $sql = 'SELECT COUNT(*) AS count FROM mst_captcha WHERE'.($this->mViewData['captcha_config']['case_sensitive']==1 ? 'binary' : '').' word = ? AND ip_address = ? AND captcha_time > ?';
     $binds = array($captcha, $this->input->ip_address(), $expiration);
     $query = $this->db->query($sql, $binds);
     $row = $query->row();
@@ -45,9 +50,9 @@ class Login extends MY_Controller {
 			$remember = ($this->input->post('remember')=='on');
       
       // get captcha data
-      if ($use_captcha == 1) $captcha = $this->input->post('captcha'); else $captcha = '';
-      			
-      if ($use_captcha == 1 && $captcha == '') {
+      if ($use_captcha) $captcha = $this->input->post('captcha'); else $captcha = '';
+      
+      if ($use_captcha && $captcha == '') {
         // config use captcha = 1 but the posted captcha is empty string, cannot login
         $this->system_message->set_error('Captcha is mandatory');
         refresh();
@@ -55,10 +60,12 @@ class Login extends MY_Controller {
       } else {
         
         // cek capctha nya
-        if (!$this->isCaptchaOK($captcha)) {
-          $this->system_message->set_error('Wrong captcha!');
-          refresh();
-          //header('Location: '.base_url());
+        if ($use_captcha) {
+          if (!$this->isCaptchaOK($captcha)) {
+            $this->system_message->set_error('Wrong captcha!');
+            refresh();
+            //header('Location: '.base_url());
+          }
         }
         
         // cek login nya
@@ -68,10 +75,11 @@ class Login extends MY_Controller {
 				  $this->system_message->set_success($messages);
 				  //redirect('admin');
           
-          //wawan modified ini
+          //wawan modified ini biar langsung "lari" ke url yang di maksud sebelumya
           if (strpos($this->session->userdata('current_url_full'), 'login') == false && !empty($this->session->userdata('current_url_full'))) {
             $reqURL = $this->session->userdata('current_url_full');
             $this->session->set_userdata([ 'current_url_full' => '' ]);
+            if ($reqURL == base_url()) $reqURL .= 'admin';
             redirect($reqURL);
           } else {
             redirect('admin');
@@ -89,16 +97,11 @@ class Login extends MY_Controller {
       }
 		}
 		
-    // setup captcha      
+    // setup captcha
     // mulai setup captcha
-    $this->mViewData['captcha_folder'] = $this->mSiteConfig['captcha_folder'];
-    $this->mViewData['captcha_url'] = base_url().$this->mSiteConfig['captcha_url'];
-    $this->mViewData['use_captcha'] = $use_captcha;
-    if ($use_captcha == 1) {
+    if ($use_captcha) {
       $this->load->helper('captcha');
-      $config_captcha = $this->config->item('captcha');
-      $config_captcha['img_url'] = $this->mViewData['captcha_url'];
-      $cap = create_captcha($config_captcha);
+      $cap = create_captcha($this->mViewData['captcha_config']);
       $cap_data = array(
         'captcha_time'  => $cap['time'],
         'ip_address'    => $this->input->ip_address(),
@@ -113,5 +116,6 @@ class Login extends MY_Controller {
     $this->mViewData['form'] = $form;
 		$this->mBodyClass = 'login-page';
 		$this->render('login', 'empty');
-	}
+	}  
+  
 }
