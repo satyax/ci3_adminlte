@@ -15,7 +15,7 @@
       
       <div class="box-body">
         <?php echo $form1->open(); ?>
-        <?php echo $form1->bs3_text('Order Number', 'order_number', '300219492'); ?>
+        <?php echo $form1->bs3_text('Order Number', 'order_number', ''); ?>
         <?php echo $form1->bs3_submit('Submit'); ?>
         <?php echo $form1->close(); ?>
       </div>

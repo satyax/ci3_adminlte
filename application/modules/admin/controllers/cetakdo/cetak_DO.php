@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Cetak_DO extends Admin_Controller {
+class Cetak_do extends Admin_Controller {
   
   public function __construct()
   {
@@ -105,10 +105,9 @@ class Cetak_DO extends Admin_Controller {
         LEFT OUTER JOIN sales_flat_order_address sa ON so.entity_id = sa.parent_id AND sa.address_type = 'shipping'
         LEFT OUTER JOIN directory_country_region dr ON sa.region_id = dr.region_id
         LEFT OUTER JOIN sales_flat_order_payment sp ON so.entity_id = sp.parent_id
-        LEFT OUTER JOIN sales_flat_order_status_history sh ON so.entity_id = sh.parent_id
-        LEFT OUTER JOIN admin_user u ON sh.`user_id` = u.user_id
-        LEFT OUTER JOIN aw_deliverydate_delivery aw ON so.entity_id = aw.order_id
         LEFT OUTER JOIN sales_flat_order_status_history shc ON so.entity_id = shc.parent_id AND (shc.status = 'processing')
+        LEFT OUTER JOIN admin_user u ON shc.`user_id` = u.user_id
+        LEFT OUTER JOIN aw_deliverydate_delivery aw ON so.entity_id = aw.order_id        
         LEFT OUTER JOIN admin_user uc ON shc.`user_id` = uc.user_id
         LEFT OUTER JOIN `sales_flat_invoice` si ON so.entity_id = si.order_id
         LEFT OUTER JOIN sales_flat_creditmemo scm ON so.entity_id = scm.order_id
@@ -124,7 +123,7 @@ class Cetak_DO extends Admin_Controller {
     $rowProduk1 = 21; $rowProduk2 = 64; $rowProduk3 = 107;
     $fileType = 'Excel5';
     $objReader = PHPExcel_IOFactory::createReader($fileType);
-    $objPHPExcel = $objReader->load(FCPATH.'assets\dist\oshop\templateInvoice.xls');
+    $objPHPExcel = $objReader->load(FCPATH.'assets/dist/oshop/templateInvoice.xls');
     $objPHPExcel->setActiveSheetIndex(0);
     foreach ($query->result() as $row) {
       
