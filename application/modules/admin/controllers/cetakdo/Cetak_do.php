@@ -37,7 +37,7 @@ class Cetak_do extends Admin_Controller {
       $oshop = $this->load->database('oshop', TRUE);
     }
     
-    
+    // 400000024
     $query = $oshop->query("
         SELECT DISTINCT
         so.entity_id
@@ -105,7 +105,7 @@ class Cetak_do extends Admin_Controller {
         LEFT OUTER JOIN sales_flat_order_address sa ON so.entity_id = sa.parent_id AND sa.address_type = 'shipping'
         LEFT OUTER JOIN directory_country_region dr ON sa.region_id = dr.region_id
         LEFT OUTER JOIN sales_flat_order_payment sp ON so.entity_id = sp.parent_id
-        LEFT OUTER JOIN sales_flat_order_status_history shc ON so.entity_id = shc.parent_id AND (shc.status = 'processing')
+        LEFT OUTER JOIN sales_flat_order_status_history shc ON so.entity_id = shc.parent_id
         LEFT OUTER JOIN admin_user u ON shc.`user_id` = u.user_id
         LEFT OUTER JOIN aw_deliverydate_delivery aw ON so.entity_id = aw.order_id        
         LEFT OUTER JOIN admin_user uc ON shc.`user_id` = uc.user_id
@@ -115,6 +115,8 @@ class Cetak_do extends Admin_Controller {
         LEFT OUTER JOIN sales_flat_shipment_item ssi ON soi.item_id=ssi.order_item_id AND ss.entity_id=ssi.parent_id
       WHERE
         so.increment_id = $order_number
+      GROUP BY
+        so.increment_id, soi.sku, soi.qty_ordered
       ORDER BY 
         so.increment_id
     ");
@@ -125,12 +127,19 @@ class Cetak_do extends Admin_Controller {
     $objReader = PHPExcel_IOFactory::createReader($fileType);
     $objPHPExcel = $objReader->load(FCPATH.'assets/dist/oshop/templateInvoice.xls');
     $objPHPExcel->setActiveSheetIndex(0);
+    
+    $styleAligntmentHorizontalCenter = array(
+      'alignment' => array(
+        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+      )
+    );
+    
     foreach ($query->result() as $row) {
       
       // isi yang diisi cuma sekali
       if ($i==1) {
         
-        if (substr($order_number, 0, 1) == '4') {
+        if (substr($order_number, 0, 2) == "'4") {
           $payment_method = 'Cash Leasing';
         } else {
           $payment_method = $row->method;
@@ -187,9 +196,22 @@ class Cetak_do extends Admin_Controller {
       }
       
       // isi detail produk nya
-      if ($i>9) {
+      if ($i>8) {
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore($rowProduk1,1);
+        $objPHPExcel->getActiveSheet()->mergeCells('D'.$rowProduk1.':E'.$rowProduk1);
+        $objPHPExcel->getActiveSheet()->getStyle('D'.$rowProduk1.':E'.$rowProduk1)->applyFromArray($styleAligntmentHorizontalCenter);
         
+        $rowProduk2 = $rowProduk2 + 1;
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore($rowProduk2,1);
+        $objPHPExcel->getActiveSheet()->mergeCells('D'.$rowProduk2.':E'.$rowProduk2);
+        $objPHPExcel->getActiveSheet()->getStyle('D'.$rowProduk2.':E'.$rowProduk2)->applyFromArray($styleAligntmentHorizontalCenter);
+        
+        $rowProduk3 = $rowProduk3 + 1;
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore($rowProduk3,1);
+        $objPHPExcel->getActiveSheet()->mergeCells('D'.$rowProduk3.':E'.$rowProduk3);
+        $objPHPExcel->getActiveSheet()->getStyle('D'.$rowProduk3.':E'.$rowProduk3)->applyFromArray($styleAligntmentHorizontalCenter);
       }
+      
       $objPHPExcel->getActiveSheet()->setCellValue('C'.$rowProduk1, $row->sku)
                                     ->setCellValue('C'.$rowProduk2, $row->sku)
                                     ->setCellValue('C'.$rowProduk3, $row->sku)
