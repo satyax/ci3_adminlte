@@ -25,7 +25,7 @@ class Cetak_do extends Admin_Controller {
   
   public function printInv() {
     
-    $order_number = $this->db->escape($this->input->post('order_number'));
+    $order_number = $this->db->escape(rtrim(ltrim($this->input->post('order_number'))));
     $this->load->model('Trs_invoice_print_model','trs_invoice_print');
     
     // open connection to oshop production database
@@ -57,7 +57,7 @@ class Cetak_do extends Admin_Controller {
         , sa.postcode
         , sa.telephone
         , sa.fax
-        , DATE_FORMAT( IF(soc.created_at IS NOT NULL, DATE_ADD(soc.created_at, INTERVAL 7 HOUR), DATE_ADD(so.created_at, INTERVAL 7 HOUR)) , "%d-%m-%Y") as order_date
+        , DATE_FORMAT( IF(soc.created_at IS NOT NULL, DATE_ADD(soc.created_at, INTERVAL 7 HOUR), DATE_ADD(so.created_at, INTERVAL 7 HOUR)) , '%d-%m-%Y') as order_date
         , CONCAT(u.firstname, ' ', u.lastname) AS order_created_by
         , aw.delivery_date  AS delivery_date_request
         , DATE_ADD(shc.created_at, INTERVAL 7 HOUR) AS `payment_date`
