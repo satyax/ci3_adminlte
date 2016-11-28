@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $autoload['packages'] = array();
 
-$autoload['libraries'] = array('Admin/wawan_lib_admin');
+$autoload['libraries'] = array('wawan_lib_admin');
 
 $autoload['drivers'] = array();
 

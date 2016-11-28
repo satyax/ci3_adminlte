@@ -13,7 +13,7 @@
 					<i class='<?php echo $parent_params['icon']; ?>'></i> <?php echo $parent_params['name']; ?>
 				</a>
 			</li>
-
+      
 		<?php else: ?>
 
 			<?php $parent_active = ($ctrler==$parent); ?>

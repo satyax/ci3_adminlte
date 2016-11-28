@@ -59,7 +59,8 @@ $config['site'] = array(
 		'webmaster'	=> array('skin' => 'skin-red'),
 		'admin'		=> array('skin' => 'skin-purple'),
 		'manager'	=> array('skin' => 'skin-black'),
-		'staff'		=> array('skin' => 'skin-blue')
+		'staff'		=> array('skin' => 'skin-blue'),
+    'showroom'    => array('skin' => 'skin-blue'),
 	),
 
 	// Menu items which support icon fonts, e.g. Font Awesome
@@ -143,15 +144,22 @@ $config['site'] = array(
 	// restricted pages to specific groups of users, which will affect sidemenu item as well
 	// pages out of this array will have no restriction (except required admin user login)
 	'page_auth' => array(
-    'user'              => array('webmaster', 'admin', 'manager'),
-		'user/create'				=> array('webmaster', 'admin', 'manager'),
-		'user/group'				=> array('webmaster', 'admin', 'manager'),
-		'panel'						=> array('webmaster'),
-		'panel/admin_user'			=> array('webmaster'),
+    'user'                    => array('webmaster', 'admin', 'manager'),
+		'user/create'				      => array('webmaster', 'admin', 'manager'),
+		'user/group'				      => array('webmaster', 'admin', 'manager'),
+		'panel'						        => array('webmaster'),
+		'panel/admin_user'			  => array('webmaster'),
 		'panel/admin_user_create'	=> array('webmaster'),
 		'panel/admin_user_group'	=> array('webmaster'),
-    'auth'            => array('webmaster'),
-    'authadmin'            => array('webmaster'),
+    'auth'                    => array('webmaster'),
+    'authadmin'               => array('webmaster'),
+    'master'             => array('webmaster'),
+    'categories'              => array('webmaster', 'admin', 'manager'),
+    'subcategories'           => array('webmaster', 'admin', 'manager'),
+    'onenoteemail'            => array('webmaster', 'admin', 'manager'),
+    'onenote'                 => array('webmaster', 'admin', 'manager'),    
+    'cetakdo/cetak_do'        => array('webmaster', 'admin', 'manager','showroom'),
+    
 	),
 
 	// Useful links to display at bottom of sidemenu (e.g. to pages outside Admin Panel)

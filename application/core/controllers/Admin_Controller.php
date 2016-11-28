@@ -37,7 +37,7 @@ class Admin_Controller extends MY_Controller {
     $this->mViewData['image_profile_folder'] = $this->mSiteConfig['image_profile_folder'];
     $this->mViewData['file_upload_real_folder'] = $this->mSiteConfig['image_folder'];
     $this->mViewData['file_upload_folder'] = $this->mSiteConfig['image_folder'];
-
+    
 		parent::render($view_file);
 	}
 

@@ -66,7 +66,8 @@ class MY_Controller extends MX_Controller {
       $capcthaConfiguration = $this->wawan_lib_admin->retrieveCaptchaConfigurations();
       $this->mViewData['captcha_config'] = $capcthaConfiguration;
       
-		  $site_config = $this->config->load('Admin/site', true)['site'];
+		  //$site_config = $this->config->load('Admin/site', true)['site'];
+      $site_config = $this->config->load('site');
     } else {
       $site_config = $this->config->load('site');
     }
