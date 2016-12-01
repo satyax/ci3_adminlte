@@ -25,6 +25,9 @@ class Cetak_do extends Admin_Controller {
   
   public function printInv() {
     
+    set_time_limit(0);
+    ini_set('memory_limit', '2048M');
+    
     $order_number = $this->db->escape(rtrim(ltrim($this->input->post('order_number'))));
     $this->load->model('Trs_invoice_print_model','trs_invoice_print');
     
@@ -122,15 +125,15 @@ class Cetak_do extends Admin_Controller {
     ");
     
     $i = 1;
-    $rowProduk1 = 21; $rowProduk2 = 64; $rowProduk3 = 107;
+    $rowProduk1 = 13; $rowProduk2 = 47; $rowProduk3 = 81;
     $fileType = 'Excel5';
     $objReader = PHPExcel_IOFactory::createReader($fileType);
     $objPHPExcel = $objReader->load(FCPATH.'assets/dist/oshop/templateInvoice.xls');
     $objPHPExcel->setActiveSheetIndex(0);
     
-    $styleAligntmentHorizontalCenter = array(
+    $styleAligntmentHorizontalLeft = array(
       'alignment' => array(
-        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
       )
     );
     
@@ -145,88 +148,76 @@ class Cetak_do extends Admin_Controller {
           $payment_method = $row->method;
         }
         
-        $objPHPExcel->getActiveSheet()->setCellValue('E9', $row->customer_name)
-                                      ->setCellValue('E52', $row->customer_name)
-                                      ->setCellValue('E95', $row->customer_name)
-                                      ->setCellValue('E10', $row->street)
-                                      ->setCellValue('E53', $row->street)
-                                      ->setCellValue('E96', $row->street)
-                                      ->setCellValue('E11', $row->city)
-                                      ->setCellValue('E54', $row->city)
-                                      ->setCellValue('E97', $row->city)
-                                      ->setCellValue('E12', $row->kelurahan)
-                                      ->setCellValue('E55', $row->kelurahan)
-                                      ->setCellValue('E98', $row->kelurahan)
-                                      ->setCellValue('E13', $row->kecamatan)
-                                      ->setCellValue('E56', $row->kecamatan)
-                                      ->setCellValue('E99', $row->kecamatan)
-                                      ->setCellValue('E14', $row->province)
-                                      ->setCellValue('E57', $row->province)
-                                      ->setCellValue('E100', $row->province)
-                                      ->setCellValue('E15', 'Indonesia')
-                                      ->setCellValue('E58', 'Indonesia')
-                                      ->setCellValue('E101', 'Indonesia')
-                                      ->setCellValue('E16', 'T: '.$row->telephone)
-                                      ->setCellValue('E59', 'T: '.$row->telephone)
-                                      ->setCellValue('E102', 'T: '.$row->telephone)
-                                      ->setCellValue('E17', 'F: '.$row->fax)
-                                      ->setCellValue('E60', 'F: '.$row->fax)
-                                      ->setCellValue('E103', 'F: '.$row->fax)
-                                      ->setCellValue('E18', $payment_method)
-                                      ->setCellValue('E61', $payment_method)
-                                      ->setCellValue('E104', $payment_method)
-                                      ->setCellValue('J9', $row->order_number)
-                                      ->setCellValue('J52', $row->order_number)
-                                      ->setCellValue('J95', $row->order_number)
-                                      ->setCellValue('J10', $row->order_date)
-                                      ->setCellValue('J53', $row->order_date)
-                                      ->setCellValue('J96', $row->order_date)
-                                      ->setCellValue('J11', $row->order_created_by)
-                                      ->setCellValue('J54', $row->order_created_by)
-                                      ->setCellValue('J97', $row->order_created_by)
-                                      ->setCellValue('J30', $row->base_subtotal_incl_tax)
-                                      ->setCellValue('J73', $row->base_subtotal_incl_tax)
-                                      ->setCellValue('J116', $row->base_subtotal_incl_tax)
-                                      ->setCellValue('J31', $row->discount_amount)
-                                      ->setCellValue('J74', $row->discount_amount)
-                                      ->setCellValue('J117', $row->discount_amount)
-                                      ->setCellValue('J32', $row->base_grand_total)
-                                      ->setCellValue('J75', $row->base_grand_total)
-                                      ->setCellValue('J118', $row->base_grand_total);
+        $objPHPExcel->getActiveSheet()->setCellValue('D6', $row->customer_name)
+                                      ->setCellValue('D40', $row->customer_name)
+                                      ->setCellValue('D74', $row->customer_name)
+                                      ->setCellValue('D7', $row->street)
+                                      ->setCellValue('D41', $row->street)
+                                      ->setCellValue('D75', $row->street)
+                                      ->setCellValue('D8', $row->city)
+                                      ->setCellValue('D42', $row->city)
+                                      ->setCellValue('D76', $row->city)
+                                      ->setCellValue('D9', 'T: '.$row->telephone)
+                                      ->setCellValue('D43', 'T: '.$row->telephone)
+                                      ->setCellValue('D77', 'T: '.$row->telephone)
+                                      ->setCellValue('D10', 'F: '.$row->fax)
+                                      ->setCellValue('D44', 'F: '.$row->fax)
+                                      ->setCellValue('D78', 'F: '.$row->fax)
+                                      ->setCellValue('I9', $payment_method)
+                                      ->setCellValue('I43', $payment_method)
+                                      ->setCellValue('I77', $payment_method)
+                                      ->setCellValue('I6', $row->order_number)
+                                      ->setCellValue('I40', $row->order_number)
+                                      ->setCellValue('I74', $row->order_number)
+                                      ->setCellValue('I7', $row->order_date)
+                                      ->setCellValue('I41', $row->order_date)
+                                      ->setCellValue('I75', $row->order_date)
+                                      ->setCellValue('I8', $row->order_created_by)
+                                      ->setCellValue('I42', $row->order_created_by)
+                                      ->setCellValue('I76', $row->order_created_by)
+                                      ->setCellValue('I22', $row->base_subtotal_incl_tax)
+                                      ->setCellValue('I56', $row->base_subtotal_incl_tax)
+                                      ->setCellValue('I90', $row->base_subtotal_incl_tax)
+                                      ->setCellValue('I23', $row->discount_amount)
+                                      ->setCellValue('I57', $row->discount_amount)
+                                      ->setCellValue('I91', $row->discount_amount)
+                                      ->setCellValue('I24', $row->base_grand_total)
+                                      ->setCellValue('I58', $row->base_grand_total)
+                                      ->setCellValue('I92', $row->base_grand_total);
       }
       
       // isi detail produk nya
       if ($i>8) {
         $objPHPExcel->getActiveSheet()->insertNewRowBefore($rowProduk1,1);
-        $objPHPExcel->getActiveSheet()->mergeCells('D'.$rowProduk1.':E'.$rowProduk1);
-        $objPHPExcel->getActiveSheet()->getStyle('D'.$rowProduk1.':E'.$rowProduk1)->applyFromArray($styleAligntmentHorizontalCenter);
+        $objPHPExcel->getActiveSheet()->mergeCells('C'.$rowProduk1.':E'.$rowProduk1);
+        $objPHPExcel->getActiveSheet()->getStyle('C'.$rowProduk1.':E'.$rowProduk1)->applyFromArray($styleAligntmentHorizontalLeft);
         
         $rowProduk2 = $rowProduk2 + 1;
         $objPHPExcel->getActiveSheet()->insertNewRowBefore($rowProduk2,1);
-        $objPHPExcel->getActiveSheet()->mergeCells('D'.$rowProduk2.':E'.$rowProduk2);
-        $objPHPExcel->getActiveSheet()->getStyle('D'.$rowProduk2.':E'.$rowProduk2)->applyFromArray($styleAligntmentHorizontalCenter);
+        $objPHPExcel->getActiveSheet()->mergeCells('C'.$rowProduk2.':E'.$rowProduk2);
+        $objPHPExcel->getActiveSheet()->getStyle('C'.$rowProduk2.':E'.$rowProduk2)->applyFromArray($styleAligntmentHorizontalLeft);
         
         $rowProduk3 = $rowProduk3 + 1;
         $objPHPExcel->getActiveSheet()->insertNewRowBefore($rowProduk3,1);
-        $objPHPExcel->getActiveSheet()->mergeCells('D'.$rowProduk3.':E'.$rowProduk3);
-        $objPHPExcel->getActiveSheet()->getStyle('D'.$rowProduk3.':E'.$rowProduk3)->applyFromArray($styleAligntmentHorizontalCenter);
+        $objPHPExcel->getActiveSheet()->mergeCells('C'.$rowProduk3.':E'.$rowProduk3);
+        $objPHPExcel->getActiveSheet()->getStyle('C'.$rowProduk3.':E'.$rowProduk3)->applyFromArray($styleAligntmentHorizontalLeft);
       }
       
-      $objPHPExcel->getActiveSheet()->setCellValue('C'.$rowProduk1, $row->sku)
-                                    ->setCellValue('C'.$rowProduk2, $row->sku)
-                                    ->setCellValue('C'.$rowProduk3, $row->sku)
-                                    ->setCellValue('D'.$rowProduk1, $row->qty_ordered)
-                                    ->setCellValue('D'.$rowProduk2, $row->qty_ordered)
-                                    ->setCellValue('D'.$rowProduk3, $row->qty_ordered)
-                                    ->setCellValue('F'.$rowProduk1, $row->product_name)
-                                    ->setCellValue('F'.$rowProduk2, $row->product_name)
-                                    ->setCellValue('F'.$rowProduk3, $row->product_name)
-                                    ->setCellValue('H'.$rowProduk1, $row->unit_price)
-                                    ->setCellValue('H'.$rowProduk2, $row->unit_price)
-                                    ->setCellValue('H'.$rowProduk3, $row->unit_price)
-                                    ->setCellValue('J'.$rowProduk1, $row->row_total)
-                                    ->setCellValue('J'.$rowProduk2, $row->row_total)
-                                    ->setCellValue('J'.$rowProduk3, $row->row_total);
+      $objPHPExcel->getActiveSheet()->setCellValue('B'.$rowProduk1, $row->sku)
+                                    ->setCellValue('B'.$rowProduk2, $row->sku)
+                                    ->setCellValue('B'.$rowProduk3, $row->sku)
+                                    ->setCellValue('F'.$rowProduk1, $row->qty_ordered)
+                                    ->setCellValue('F'.$rowProduk2, $row->qty_ordered)
+                                    ->setCellValue('F'.$rowProduk3, $row->qty_ordered)
+                                    ->setCellValue('C'.$rowProduk1, $row->product_name)
+                                    ->setCellValue('C'.$rowProduk2, $row->product_name)
+                                    ->setCellValue('C'.$rowProduk3, $row->product_name)
+                                    ->setCellValue('G'.$rowProduk1, $row->unit_price)
+                                    ->setCellValue('G'.$rowProduk2, $row->unit_price)
+                                    ->setCellValue('G'.$rowProduk3, $row->unit_price)
+                                    ->setCellValue('I'.$rowProduk1, $row->row_total)
+                                    ->setCellValue('I'.$rowProduk2, $row->row_total)
+                                    ->setCellValue('I'.$rowProduk3, $row->row_total);
       
       $rowProduk1++; $rowProduk2++; $rowProduk3++; $i++;
     }    
